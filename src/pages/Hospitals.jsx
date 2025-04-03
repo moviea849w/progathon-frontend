@@ -49,7 +49,7 @@ const Hospitals = () => {
     const fetchHospitals = async () => {
         try {
             console.log("Fetching hospitals for location:", userLocation);
-            const response = await axios.get('http://localhost:5000/api/nearby-hospitals', {
+            const response = await axios.get('https://backend-6wuz.onrender.com/api/nearby-hospitals', {
                 params: {
                     lat: userLocation.lat,
                     lng: userLocation.lng
