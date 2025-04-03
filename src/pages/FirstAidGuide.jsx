@@ -14,7 +14,7 @@ const FirstAidGuide = () => {
         const fetchGuides = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get("http://localhost:5000/api/first-aid", {
+                const response = await axios.get("https://backend-6wuz.onrender.com/api/first-aid", {
                     timeout: 5000, // Add timeout to prevent hanging
                 });
                 setGuides(response.data);
