@@ -17,7 +17,7 @@ const SOSButton = () => {
         setMessage("");
 
         try {
-            const response = await axios.post('http://localhost:5000/api/sos/alert', {
+            const response = await axios.post('https://backend-6wuz.onrender.com/api/sos/alert', {
                 userId: user.sub
             });
             setMessage(response.data.message);
