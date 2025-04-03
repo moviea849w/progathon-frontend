@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@plugin "daisyui";
+
+
+.sos-container {
+    text-align: center;
+    margin-top: 0px;
+}
+
+.sos-button {
+    background-color: red;
+    color: white;
+    font-size: 18px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.sos-button:hover {
+    background-color: darkred;
+}
+
+.sos-message {
+    margin-top: 10px;
+    font-weight: bold;
+    color: green;
+}
