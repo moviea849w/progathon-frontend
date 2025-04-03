@@ -38,6 +38,17 @@ export default function Home() {
   const profileDropdownRef = useRef(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [mobileMenuOpen]);
+
   // Refs for animation elements
   const heroRef = useRef(null);
   const featuresRef = useRef(null);
@@ -287,88 +298,90 @@ export default function Home() {
 
           {/* Mobile Navigation Menu */}
           {mobileMenuOpen && (
-            <div className="md:hidden bg-white border-t fixed inset-x-0 bottom-0 top-16 overflow-y-auto">
-              <div className="px-4 py-4">
-                {/* Main Navigation Links */}
-                <div className="space-y-2 mb-4">
-                  <a href="#features" className="block text-sm font-medium hover:text-red-600 transition-colors py-2">
-                    Features
-                  </a>
-                  <a href="#how-it-works" className="block text-sm font-medium hover:text-red-600 transition-colors py-2">
-                    How It Works
-                  </a>
-                  <Link to="/first-aid" className="block text-sm font-medium hover:text-red-600 transition-colors py-2">
-                    Guide
-                  </Link>
-                  <Link to="/hospitals" className="block text-sm font-medium hover:text-red-600 transition-colors py-2">
-                    Nearby Hospitals
-                  </Link>
-                </div>
+            <div className="md:hidden fixed inset-0 top-16 z-50">
+              <div className="absolute inset-0 bg-white">
+                <div className="h-full px-4 py-4 pb-20 overflow-y-auto">
+                  {/* Main Navigation Links */}
+                  <div className="space-y-2 mb-4">
+                    <a href="#features" className="block text-sm font-medium hover:text-red-600 transition-colors py-2">
+                      Features
+                    </a>
+                    <a href="#how-it-works" className="block text-sm font-medium hover:text-red-600 transition-colors py-2">
+                      How It Works
+                    </a>
+                    <Link to="/first-aid" className="block text-sm font-medium hover:text-red-600 transition-colors py-2">
+                      Guide
+                    </Link>
+                    <Link to="/hospitals" className="block text-sm font-medium hover:text-red-600 transition-colors py-2">
+                      Nearby Hospitals
+                    </Link>
+                  </div>
 
-                {/* SOS Button Section */}
-                <div className="py-4 border-y border-gray-100 my-4">
-                  <SosButton />
-                </div>
+                  {/* SOS Button Section */}
+                  <div className="py-4 border-y border-gray-100 my-4">
+                    <SosButton />
+                  </div>
 
-                {/* Authentication Section */}
-                <div className="space-y-4">
-                  {!isAuthenticated ? (
-                    <button 
-                      onClick={() => loginWithRedirect()} 
-                      className="w-full px-4 py-3 rounded-md bg-red-600 text-white hover:bg-red-700 transition-colors font-medium"
-                    >
-                      Login
-                    </button>
-                  ) : (
-                    <>
-                      <div className="flex items-center gap-3 py-2">
-                        <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center overflow-hidden">
-                          {user?.picture ? (
-                            <img
-                              src={user.picture}
-                              alt={user.name}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <User className="h-5 w-5 text-red-600" />
-                          )}
+                  {/* Authentication Section */}
+                  <div className="space-y-4">
+                    {!isAuthenticated ? (
+                      <button 
+                        onClick={() => loginWithRedirect()} 
+                        className="w-full px-4 py-3 rounded-md bg-red-600 text-white hover:bg-red-700 transition-colors font-medium"
+                      >
+                        Login
+                      </button>
+                    ) : (
+                      <>
+                        <div className="flex items-center gap-3 py-2">
+                          <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center overflow-hidden">
+                            {user?.picture ? (
+                              <img
+                                src={user.picture}
+                                alt={user.name}
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <User className="h-5 w-5 text-red-600" />
+                            )}
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium">{user.name}</p>
+                            <p className="text-xs text-gray-500">View Profile</p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="text-sm font-medium">{user.name}</p>
-                          <p className="text-xs text-gray-500">View Profile</p>
+                        
+                        <div className="space-y-2">
+                          <Link
+                            to="/profile"
+                            className="flex items-center gap-2 text-sm font-medium hover:text-red-600 transition-colors py-2"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            <User className="h-4 w-4" />
+                            My Profile
+                          </Link>
+                          <Link
+                            to="/sos"
+                            className="flex items-center gap-2 text-sm font-medium hover:text-red-600 transition-colors py-2"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            <Edit className="h-4 w-4" />
+                            Update Information
+                          </Link>
+                          <button
+                            onClick={() => {
+                              logout({ logoutParams: { returnTo: window.location.origin } });
+                              setMobileMenuOpen(false);
+                            }}
+                            className="flex items-center gap-2 text-sm font-medium hover:text-red-600 transition-colors py-2 w-full"
+                          >
+                            <LogOut className="h-4 w-4" />
+                            Logout
+                          </button>
                         </div>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <Link
-                          to="/profile"
-                          className="flex items-center gap-2 text-sm font-medium hover:text-red-600 transition-colors py-2"
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          <User className="h-4 w-4" />
-                          My Profile
-                        </Link>
-                        <Link
-                          to="/sos"
-                          className="flex items-center gap-2 text-sm font-medium hover:text-red-600 transition-colors py-2"
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          <Edit className="h-4 w-4" />
-                          Update Information
-                        </Link>
-                        <button
-                          onClick={() => {
-                            logout({ logoutParams: { returnTo: window.location.origin } });
-                            setMobileMenuOpen(false);
-                          }}
-                          className="flex items-center gap-2 text-sm font-medium hover:text-red-600 transition-colors py-2 w-full"
-                        >
-                          <LogOut className="h-4 w-4" />
-                          Logout
-                        </button>
-                      </div>
-                    </>
-                  )}
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
