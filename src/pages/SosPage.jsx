@@ -77,7 +77,7 @@ const SosPage = () => {
 
     try {
       const payload = { userId, ...formData };
-      await axios.post("http://localhost:5000/api/sos", payload);
+      await axios.post("https://backend-6wuz.onrender.com/api/sos", payload);
       alert("Emergency information saved successfully!");
     } catch (error) {
       console.error("Error saving SOS data:", error);
