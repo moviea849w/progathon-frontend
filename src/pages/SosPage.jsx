@@ -20,7 +20,7 @@ const SosPage = () => {
   useEffect(() => {
     if (userId) {
       axios
-        .get(`http://localhost:5000/api/sos/${userId}`)
+        .get(`https://backend-6wuz.onrender.com/api/sos/${userId}`)
         .then((res) => {
           if (res.data) {
             setFormData({
