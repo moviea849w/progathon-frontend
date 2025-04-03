@@ -9,7 +9,7 @@ const SosProfile = () => {
 
     useEffect(() => {
         if (isAuthenticated && user) {
-            axios.get(`http://localhost:5000/api/sos/${user.sub}`)
+            axios.get(`https://backend-6wuz.onrender.com/api/sos/${user.sub}`)
                 .then((res) => {
                     setSosInfo(res.data);
                     setLoading(false);
