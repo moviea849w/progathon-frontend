@@ -21,7 +21,7 @@ import {
 } from "lucide-react"
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link, useNavigate } from "react-router-dom";
-// import { Navbar } from "./Navbar/Navbar";
+
 import SosButton from "./SosButton";
 
 import ChatPopup from "./Chat/Popup"; // Adjust path as needed
@@ -297,6 +297,9 @@ export default function Home() {
                 <Link to="/first-aid" className="text-sm font-medium hover:text-red-600 transition-colors py-2">
                   Guide
                 </Link>
+                <div className="py-2">
+                  <SosButton />
+                </div>
 
                 {!isAuthenticated ? (
                   <button onClick={() => loginWithRedirect()} className="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 transition-colors w-full">
