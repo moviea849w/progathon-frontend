@@ -136,7 +136,7 @@ export default function ChatUI() {
       console.log("Sending limited chat history (last 15 messages):", limitedHistory);
       
       const response = await axios.post(
-        "http://localhost:5000/api/chat",
+        "https://backend-6wuz.onrender.com/api/chat",
         { 
           message: input,
           chatHistory: limitedHistory // Send only last 15 messages
