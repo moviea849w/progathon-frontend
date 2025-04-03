@@ -25,7 +25,10 @@ import { Link, useNavigate } from "react-router-dom";
 import SosButton from "./SosButton";
 
 import ChatPopup from "./Chat/Popup"; // Adjust path as needed
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
   const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
@@ -33,6 +36,115 @@ export default function Home() {
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const profileDropdownRef = useRef(null);
   const navigate = useNavigate();
+
+  // Refs for animation elements
+  const heroRef = useRef(null);
+  const featuresRef = useRef(null);
+  const statsRef = useRef(null);
+  const howItWorksRef = useRef(null);
+  const ctaRef = useRef(null);
+
+  useEffect(() => {
+    // Hero section animations
+    const heroTl = gsap.timeline();
+    heroTl.from(".hero-title", {
+      y: 50,
+      opacity: 0,
+      duration: 1,
+      ease: "power3.out"
+    })
+    .from(".hero-subtitle", {
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    }, "-=0.5")
+    .from(".hero-buttons", {
+      y: 20,
+      opacity: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    }, "-=0.5")
+    .from(".hero-image", {
+      scale: 0.8,
+      opacity: 0,
+      duration: 1,
+      ease: "power3.out"
+    }, "-=0.8");
+
+    // Features section animations
+    gsap.from(".feature-card", {
+      scrollTrigger: {
+        trigger: featuresRef.current,
+        start: "top center",
+        toggleActions: "play none none reverse"
+      },
+      y: 50,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: "power3.out"
+    });
+
+    // Stats section animations
+    gsap.from(".stat-item", {
+      scrollTrigger: {
+        trigger: statsRef.current,
+        start: "top center",
+        toggleActions: "play none none reverse"
+      },
+      scale: 0.5,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: "back.out(1.7)"
+    });
+
+    // How it works section animations
+    gsap.from(".how-it-works-item", {
+      scrollTrigger: {
+        trigger: howItWorksRef.current,
+        start: "top center",
+        toggleActions: "play none none reverse"
+      },
+      y: 50,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: "power3.out"
+    });
+
+    // CTA section animations
+    gsap.from(".cta-content", {
+      scrollTrigger: {
+        trigger: ctaRef.current,
+        start: "top center",
+        toggleActions: "play none none reverse"
+      },
+      x: -50,
+      opacity: 0,
+      duration: 1,
+      ease: "power3.out"
+    });
+
+    gsap.from(".cta-image", {
+      scrollTrigger: {
+        trigger: ctaRef.current,
+        start: "top center",
+        toggleActions: "play none none reverse"
+      },
+      x: 50,
+      opacity: 0,
+      duration: 1,
+      ease: "power3.out"
+    });
+
+    // Cleanup function
+    return () => {
+      heroTl.kill();
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -239,21 +351,20 @@ export default function Home() {
         </header>
 
         {/* Hero Section */}
-        <section className="relative py-20 md:py-32 bg-gradient-to-b from-red-50 to-white">
-       
+        <section ref={heroRef} className="relative py-20 md:py-32 bg-gradient-to-b from-red-50 to-white">
           <div className="container mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
             <div className="flex-1 space-y-6">
-              <div className="inline-block px-3 py-1 rounded-full bg-red-100 text-red-600 text-sm font-medium">
+              <div className="hero-title inline-block px-3 py-1 rounded-full bg-red-100 text-red-600 text-sm font-medium">
                 Emergency Response Online
               </div>
-              <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+              <h1 className="hero-title text-4xl md:text-6xl font-bold leading-tight">
                 Instant Medical Guidance Web Platform
               </h1>
-              <p className="text-lg text-gray-600 max-w-xl">
+              <p className="hero-subtitle text-lg text-gray-600 max-w-xl">
                 Access AI-powered emergency assistance, real-time first-aid instructions, and hospital locator
                 directly from your browser - no installation needed.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="hero-buttons flex flex-col sm:flex-row gap-4">
                 <button className="px-6 py-3 rounded-md bg-red-600 text-white hover:bg-red-700 transition-colors flex items-center">
                   Get Started Now
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -263,7 +374,7 @@ export default function Home() {
                 </button>
               </div>
             </div>
-            <div className="flex-1 relative">
+            <div className="hero-image flex-1 relative">
               <div className="relative w-full max-w-md mx-auto">
                 <div className="aspect-[16/10] rounded-3xl overflow-hidden shadow-2xl border-2 border-gray-800">
                   <img
@@ -289,18 +400,18 @@ export default function Home() {
         </section>
 
         {/* Emergency Stats */}
-        <section className="py-12 bg-red-600 text-white">
+        <section ref={statsRef} className="py-12 bg-red-600 text-white">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-              <div>
+              <div className="stat-item">
                 <p className="text-4xl font-bold">Instant</p>
                 <p className="text-sm opacity-80">Access to Emergency Tools</p>
               </div>
-              <div>
+              <div className="stat-item">
                 <p className="text-4xl font-bold">24/7</p>
                 <p className="text-sm opacity-80">AI Assistance Available</p>
               </div>
-              <div>
+              <div className="stat-item">
                 <p className="text-4xl font-bold">100%</p>
                 <p className="text-sm opacity-80">Web-Based Solution</p>
               </div>
@@ -309,7 +420,7 @@ export default function Home() {
         </section>
 
         {/* Features Section */}
-        <section id="features" className="py-20 bg-white">
+        <section ref={featuresRef} id="features" className="py-20 bg-white">
           <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Critical Features When You Need Them</h2>
@@ -320,7 +431,7 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="feature-card bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
                 <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mb-4">
                   <AlertCircle className="h-6 w-6 text-red-600" />
                 </div>
@@ -330,7 +441,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="feature-card bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
                 <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mb-4">
                   <MessageSquare className="h-6 w-6 text-red-600" />
                 </div>
@@ -340,7 +451,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="feature-card bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
                 <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mb-4">
                   <Mic className="h-6 w-6 text-red-600" />
                 </div>
@@ -350,7 +461,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="feature-card bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
                 <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mb-4">
                   <Wifi className="h-6 w-6 text-red-600" />
                 </div>
@@ -360,7 +471,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="feature-card bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
                 <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mb-4">
                   <MapPin className="h-6 w-6 text-red-600" />
                 </div>
@@ -370,7 +481,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="feature-card bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
                 <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mb-4">
                   <Heart className="h-6 w-6 text-red-600" />
                 </div>
@@ -384,7 +495,7 @@ export default function Home() {
         </section>
 
         {/* How It Works */}
-        <section id="how-it-works" className="py-20 bg-gray-50">
+        <section ref={howItWorksRef} id="how-it-works" className="py-20 bg-gray-50">
           <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">How MedAI Web Works</h2>
@@ -394,7 +505,7 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-              <div className="flex flex-col items-center text-center">
+              <div className="how-it-works-item flex flex-col items-center text-center">
                 <img
                   src="https://images.pexels.com/photos/356040/pexels-photo-356040.jpeg"
                   alt="Emergency situation"
@@ -406,7 +517,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="flex flex-col items-center text-center">
+              <div className="how-it-works-item flex flex-col items-center text-center">
                 <img
                   src="https://images.pexels.com/photos/6627354/pexels-photo-6627354.jpeg?auto=compress&cs=tinysrgb&w=600"
                   alt="Medical guidance"
@@ -418,7 +529,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="flex flex-col items-center text-center">
+              <div className="how-it-works-item flex flex-col items-center text-center">
                 <img
                   src="https://images.pexels.com/photos/263402/pexels-photo-263402.jpeg"
                   alt="Emergency help"
@@ -434,10 +545,10 @@ export default function Home() {
         </section>
 
         {/* Get Started CTA */}
-        <section id="get-started" className="py-20 bg-red-600 text-white">
+        <section ref={ctaRef} id="get-started" className="py-20 bg-red-600 text-white">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-              <div className="max-w-2xl">
+              <div className="cta-content max-w-2xl">
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready for Any Emergency</h2>
                 <p className="text-lg opacity-90 mb-8">
                   Access MedAI instantly through your browser and be prepared for medical emergencies anytime,
@@ -448,7 +559,7 @@ export default function Home() {
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </button>
               </div>
-              <div className="relative">
+              <div className="cta-image relative">
                 <img
                   src="https://images.pexels.com/photos/3844581/pexels-photo-3844581.jpeg?auto=compress&cs=tinysrgb&w=600"
                   alt="Medical technology"
